@@ -1,3 +1,38 @@
+document.getElementById("descargarPDF")
+.addEventListener("click", () => {
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+
+  let y = 20;
+
+  doc.setFontSize(20);
+  doc.text("Confirmaciones de Asistencia", 20, y);
+
+  y += 15;
+
+  todasLasConfirmaciones.forEach((bloque, index) => {
+
+    const texto = bloque.innerText;
+
+    const lineas = doc.splitTextToSize(texto, 170);
+
+    doc.setFontSize(11);
+    doc.text(lineas, 20, y);
+
+    y += lineas.length * 7 + 10;
+
+    if (y > 260) {
+      doc.addPage();
+      y = 20;
+    }
+
+  });
+
+  doc.save("confirmaciones.pdf");
+
+});
+
 const SHEET_URL =
 "https://docs.google.com/spreadsheets/d/e/2PACX-1vTniv6gWhOFdJCXXg8THh_jIhyuaVbDH3USZameC4-DOqvQ0gcv7wHz1JaiJHAqcDxYWlBtUlE1cROH/pub?gid=194307549&single=true&output=csv&nocache=" + Date.now();
 
